@@ -12,7 +12,7 @@ with urlopen('https://raw.githubusercontent.com/plotly/datasets/master/geojson-c
 
 ########### Define a few variables ######
 
-tabtitle = 'Make a selection'
+tabtitle = 'US Census 2017'
 sourceurl = 'https://www.kaggle.com/muonneutrino/us-census-demographic-data'
 githublink = 'https://github.com/psgrewal42/305-virginia-census-data'
 varlist = ['TotalPop', 'Men', 'Women', 'Hispanic',
@@ -72,7 +72,7 @@ app.title = tabtitle
 ########### Layout
 
 app.layout = html.Div(children=[
-    html.H1('USA Census data 2017'),
+    html.H3('USA Census 2017'),
     # Dropdowns
     html.Div(children=[
         html.Div([
@@ -115,7 +115,6 @@ def display_results(selected_value, selected_state):
     new_loading_style = loading_style
     #dfs = all_counties_extended.loc[all_counties_extended['State_x'] == selected_state]
     dfs = df_dict[selected_state]
-    print(dfs.head())
     if selected_value not in list(df.select_dtypes(['category']).columns):
         valmin = dfs[selected_value].min()
         valmax = dfs[selected_value].max()
