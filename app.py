@@ -5,6 +5,7 @@ from dash.dependencies import Input, Output, State
 import pandas as pd
 from urllib.request import urlopen
 import json
+import collections
 
 with urlopen('https://raw.githubusercontent.com/plotly/datasets/master/geojson-counties-fips.json') as response:
     counties = json.load(response)
@@ -13,7 +14,7 @@ with urlopen('https://raw.githubusercontent.com/plotly/datasets/master/geojson-c
 
 tabtitle = 'Make a selection'
 sourceurl = 'https://www.kaggle.com/muonneutrino/us-census-demographic-data'
-githublink = 'https://github.com/austinlasseter/dash-virginia-counties'
+githublink = 'https://github.com/psgrewal42/305-virginia-census-data'
 varlist = ['TotalPop', 'Men', 'Women', 'Hispanic',
            'White', 'Black', 'Native', 'Asian', 'Pacific', 'VotingAgeCitizen',
            'Income', 'IncomeErr', 'IncomePerCap', 'IncomePerCapErr', 'Poverty',
@@ -55,7 +56,6 @@ mid_lat_long = {'Wisconsin': [44.5, -89.5], 'West Virginia': [39, -80.5], 'Vermo
                 'Wyoming': [43.07597, -107.290283], 'North Carolina': [35.782169, -80.793457],
                 'Louisiana': [30.39183, -92.329102]}
 statelist = mid_lat_long.keys()
-
 
 df_dict = {}
 
@@ -132,8 +132,6 @@ def display_results(selected_value, selected_state):
                       mapbox_zoom=5,
                       mapbox_center={"lat": mid_lat_long[selected_state][0], "lon": mid_lat_long[selected_state][1]})
     fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
-
-    # https://community.plot.ly/t/what-colorscales-are-available-in-plotly-and-which-are-the-default/2079
     return fig, new_loading_style
 
 
