@@ -56,6 +56,7 @@ mid_lat_long = {'Wisconsin': [44.5, -89.5], 'West Virginia': [39, -80.5], 'Vermo
                 'Louisiana': [30.39183, -92.329102]}
 statelist = mid_lat_long.keys()
 
+
 df_dict = {}
 
 for state in statelist:
@@ -121,7 +122,7 @@ def display_results(selected_value, selected_state):
         fig = go.Figure(go.Choroplethmapbox(geojson=counties,
                                             locations=dfs['FIPS'],
                                             z=dfs[selected_value],
-                                            colorscale='Blues',
+                                            colorscale='Earth',
                                             text=dfs['County'],
                                             zmin=valmin,
                                             zmax=valmax,
