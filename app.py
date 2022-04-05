@@ -25,13 +25,21 @@ varlist = ['TotalPop', 'Men', 'Women', 'Hispanic',
 
 loading_style = {'position': 'relative', 'align-self': 'center'}
 
-df = pd.read_pickle('resources/va-stats.pkl')
 all_counties = pd.read_csv(
     'https://raw.githubusercontent.com/austinlasseter/dash-virginia-counties/master/resources/acs2017_county_data.csv')
 usda = pd.read_excel(
     'https://github.com/austinlasseter/dash-virginia-counties/raw/master/resources/ruralurbancodes2013.xls')
 all_counties_extended = pd.merge(all_counties, usda, left_on='CountyId', right_on='FIPS', how='left')
 all_counties_extended['fips'] = all_counties_extended['FIPS'].astype(str)
+all_counties_extended['metro']=all_counties_extended['RUCC_2013'].map({1:'urban',
+                                   2:'suburban',
+                                   3:'suburban',
+                                   4:'town',
+                                   5:'town',
+                                   6:'town',
+                                   7:'rural',
+                                   8:'rural',
+                                   9:'rural'})
 
 mid_lat_long = {'Wisconsin': [44.5, -89.5], 'West Virginia': [39, -80.5], 'Vermont': [44, -72.699997],
                 'Texas': [31, -100], 'South Dakota': [44.5, -100], 'Rhode Island': [41.742325, -71.742332],
@@ -115,14 +123,14 @@ def display_results(selected_value, selected_state):
     new_loading_style = loading_style
     #dfs = all_counties_extended.loc[all_counties_extended['State_x'] == selected_state]
     dfs = df_dict[selected_state]
-    if selected_value not in list(df.select_dtypes(['category']).columns):
+    if selected_value not in list(dfs.select_dtypes(['category']).columns):
         valmin = dfs[selected_value].min()
         valmax = dfs[selected_value].max()
         fig = go.Figure(go.Choroplethmapbox(geojson=counties,
                                             locations=dfs['FIPS'],
                                             z=dfs[selected_value],
                                             colorscale='Earth',
-                                            text=dfs['County'],
+                                            text=dfs['County'] + "(" + dfs['metro'] + ")",
                                             zmin=valmin,
                                             zmax=valmax,
                                             marker_line_width=0))
